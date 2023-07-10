@@ -1,6 +1,7 @@
-import cloudinary from "cloudinary"
-import User from '../../../models/user'
-import sendToken from "../../../lib/sendToken";
+import User from '@/models/user'
+import sendToken from "@/lib/sendToken";
+import { NextResponse } from "next/server";
+import { v2 } from "cloudinary";
 
 /**
  * @desc Registers user
@@ -8,16 +9,16 @@ import sendToken from "../../../lib/sendToken";
  * @param {*} req 
  * @param {*} res 
  */
-export default async function register(req, res) {
+export async function POST(request) {
 
   const {
     name,
     email,
     password,
-    bio
-  } = req.body
+    bio,
+    avatar,
+  } = await request.json();
 
-  let avatar = req.body.avatar
   let imgResult = {}
   try {
 
@@ -35,7 +36,7 @@ export default async function register(req, res) {
 
     // if avatar is uploaded then set avatar
     if (avatar) {
-      imgResult = await cloudinary.v2.uploader.upload(avatar, {
+      imgResult = await v2.uploader.upload(avatar, {
         folder: "tweeter"
       })
 
@@ -48,9 +49,9 @@ export default async function register(req, res) {
     // save user 
     let userSaved = await User.create(user)
 
-    sendToken(userSaved, res, "Successfully Register User")
-    return
+    return sendToken(userSaved, NextResponse, "Successfully Register User")
   } catch (error) {
-    res.status(400).json({ error: error.message, stack: error.stack })
+    return NextResponse.json({ error: error.message, stack: error.stack },
+      { status: 500 });
   }
 }
