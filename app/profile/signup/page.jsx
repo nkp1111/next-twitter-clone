@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Button from "react-bootstrap/Button"
 import { useState } from 'react';
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -13,6 +14,8 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState("");
   const [bio, setBio] = useState("");
+
+  const router = useRouter();
 
   const setChange = (e) => {
     const { name, value } = e.currentTarget
@@ -59,7 +62,10 @@ const SignUp = () => {
       })
 
       if (res.ok) {
-        console.log("successful sign in")
+        // redirect to next -auth?
+        router.push(`/api/auth/signin/?callbackUrl=/`)
+      } else {
+        console.log(res.error);
       }
     } catch (error) {
       console.log(error)
@@ -120,7 +126,7 @@ const SignUp = () => {
 
       <Card.Footer>
         Already a user?
-        <Link href={"/profile/login"} className="fw-bold text-dark"> Login</Link>
+        <Link href={"/api/auth/signin"} className="fw-bold text-dark"> Login</Link>
       </Card.Footer>
     </Card>
   )

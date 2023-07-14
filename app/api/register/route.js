@@ -1,13 +1,15 @@
 import User from '@/models/user'
 import sendToken from "@/lib/sendToken";
 import { NextResponse } from "next/server";
-import { v2 } from "cloudinary";
+import cloudinary from "cloudinary";
+import { configCloudinary } from "@/lib"
+
 
 /**
  * @desc Registers user
  * @method POST /api/register
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  */
 export async function POST(request) {
 
@@ -36,7 +38,9 @@ export async function POST(request) {
 
     // if avatar is uploaded then set avatar
     if (avatar) {
-      imgResult = await v2.uploader.upload(avatar, {
+      configCloudinary(cloudinary);
+
+      imgResult = await cloudinary.v2.uploader.upload(avatar, {
         folder: "tweeter"
       })
 
@@ -51,7 +55,7 @@ export async function POST(request) {
 
     return sendToken(userSaved, NextResponse, "Successfully Register User")
   } catch (error) {
-    return NextResponse.json({ error: error.message, stack: error.stack },
+    return NextResponse.json({ error },
       { status: 500 });
   }
 }

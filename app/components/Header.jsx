@@ -33,8 +33,8 @@ const Header = () => {
           </Navbar.Collapse>
 
           <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Register</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
+            <NavDropdown.Item href="/profile/signup">Register</NavDropdown.Item>
+            <NavDropdown.Item href="/api/auth/signin">
               LogIn
             </NavDropdown.Item>
             <NavDropdown.Item href="#action/3.3">
@@ -44,7 +44,7 @@ const Header = () => {
               Profile
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.5">Logout</NavDropdown.Item>
+            <NavDropdown.Item href="/api/auth/signout">Logout</NavDropdown.Item>
           </NavDropdown>
         </Container>
       </Navbar>

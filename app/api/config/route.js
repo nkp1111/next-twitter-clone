@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server'
-import { configCloudinary, configMongoose } from "@/lib"
+import { configMongoose } from "@/lib"
 
 export async function GET() {
   try {
-    await configCloudinary();
     await configMongoose();
     return NextResponse.json({ success: true })
   } catch (error) {
